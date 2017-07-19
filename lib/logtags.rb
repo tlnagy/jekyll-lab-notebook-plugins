@@ -7,6 +7,36 @@ require 'set'
 require 'pathname'
 require 'uri'
 
+module Jekyll
+
+  class ProjectPage < Page
+    def initialize(site, base, dir)
+      @site = site
+      @base = base
+      @dir = dir
+      @name = 'index.html'
+
+      self.process(@name)
+      @path = site.layouts["project-home"].path
+      self.read_yaml("", "") # uses path from above first
+
+      self.data['title'] = "Projects"
+    end
+  end
+
+  class CategoryPageGenerator < Generator
+    safe true
+
+    def generate(site)
+      if site.layouts.key? 'project-home'
+        dir = site.config['project-dir'] || 'projects'
+        site.pages << ProjectPage.new(site, site.source, dir)
+      end
+    end
+  end
+
+end
+
 # Pre-render
 #
 # This is the first step. When posts are built, this block goes through and
@@ -123,13 +153,13 @@ Jekyll::Hooks.register :site, :post_write do |site|
   dir = site.config['projects_dir'] || 'projects'
   dest = site.config["destination"]
 
-  # load in the all generated HTML for the project page, we're going to clone
-  # this and inject our new content into it to avoid having to deal with liquid
-  template = File.read(File.join(dest, dir, 'index.html'))
-  doc = Nokogiri::HTML template
-
   if site.data.key?("tagmap")
-    site.data.key?("tagmap").each_key do |tag|
+    # load in the all generated HTML for the project page, we're going to clone
+    # this and inject our new content into it to avoid having to deal with liquid
+    template = File.read(File.join(dest, dir, 'index.html'))
+    doc = Nokogiri::HTML template
+
+    site.data["tagmap"].each_key do |tag|
       path = File.join(dest, dir, tag)
       FileUtils.mkdir_p path
       File.open(File.join(path, "index.html"), 'w') do |f|
