@@ -1,3 +1,7 @@
+# Adapted from https://github.com/nhoizey/jekyll-postfiles
+# with minor changes will remove and use as separate gem
+# once https://github.com/nhoizey/jekyll-postfiles/pull/9
+# is merged
 require "pathname"
 
 module Jekyll
