@@ -128,27 +128,29 @@ Jekyll::Hooks.register :site, :post_write do |site|
   template = File.read(File.join(dest, dir, 'index.html'))
   doc = Nokogiri::HTML template
 
-  site.data["tagmap"].each_key do |tag|
-    path = File.join(dest, dir, tag)
-    FileUtils.mkdir_p path
-    File.open(File.join(path, "index.html"), 'w') do |f|
-      # inject new title
-      doc.at_css('h1.post-title').inner_html = "Project ##{tag} <a href=\"#latest\">&#8617;</a>"
+  if site.data.key?("tagmap")
+    site.data.key?("tagmap").each_key do |tag|
+      path = File.join(dest, dir, tag)
+      FileUtils.mkdir_p path
+      File.open(File.join(path, "index.html"), 'w') do |f|
+        # inject new title
+        doc.at_css('h1.post-title').inner_html = "Project ##{tag} <a href=\"#latest\">&#8617;</a>"
 
-      # construct one body of HTML from all the separate fragments
-      new_node_set = Nokogiri::XML::NodeSet.new(doc)
-      site.data["tagmap"][tag].each do |content|
-        new_node_set << Nokogiri::HTML::fragment(content)
+        # construct one body of HTML from all the separate fragments
+        new_node_set = Nokogiri::XML::NodeSet.new(doc)
+        site.data["tagmap"][tag].each do |content|
+          new_node_set << Nokogiri::HTML::fragment(content)
+        end
+
+        content = doc.at_css('div.post-content')
+
+        # skeletonize page and inject new content
+        content.children.remove rescue nil
+        content << new_node_set.to_html
+        content << "<div id=latest></div>"
+
+        f.write(doc.to_html)
       end
-
-      content = doc.at_css('div.post-content')
-
-      # skeletonize page and inject new content
-      content.children.remove rescue nil
-      content << new_node_set.to_html
-      content << "<div id=latest></div>"
-
-      f.write(doc.to_html)
     end
   end
 end
