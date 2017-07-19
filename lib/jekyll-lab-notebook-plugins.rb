@@ -1,0 +1,7 @@
+require "jekyll-lab-notebook-plugins/version"
+require "count_days"
+require "embed_csv"
+require "embed_pdf"
+require "jekyll-postfiles"
+require "logtags"
+require "thought_tag"
