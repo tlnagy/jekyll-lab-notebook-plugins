@@ -1,5 +1,7 @@
 # jekyll-lab-notebook-plugins
 
+[![Gem Version](https://badge.fury.io/rb/jekyll-lab-notebook-plugins.svg)](https://badge.fury.io/rb/jekyll-lab-notebook-plugins)
+
 A collection of plugins for super charging your electronic lab notebook. See <https://github.com/tlnagy/jekyll-lab-notebook> for more details.
 
 ## Development
