@@ -1,6 +1,7 @@
 module DayLister
   require 'nokogiri'
   require 'date'
+  require 'jekyll'
 
   class DayListTag < Liquid::Tag
     def initialize(tag_name, url, tokens)
