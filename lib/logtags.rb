@@ -128,7 +128,7 @@ Jekyll::Hooks.register :posts, :post_render do |post|
 
       tags.each do |tag|
         dir = post.site.config['projects_dir'] || 'projects'
-        old_path = post.url # convert to relative url since post.url is absolute
+        old_path = post.url.dup
         old_path[0] = ''
         fix_links(new_node_set, old_path, File.join(dir, tag)) # fix rel links
         content = new_node_set.to_html
