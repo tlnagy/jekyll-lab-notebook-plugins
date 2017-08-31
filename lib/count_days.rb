@@ -17,7 +17,7 @@ module DayLister
         doc = Nokogiri::HTML::DocumentFragment.parse(post.content)
 
         doc.search('h3').each do |header|
-          if dt = DateTime.parse(header.text.strip) rescue false
+          if dt = DateTime.parse(header.attribute("id")) rescue false
             result += (dt + Rational(12, 24)).strftime('%s') + ": 4,\n"
           end
         end
