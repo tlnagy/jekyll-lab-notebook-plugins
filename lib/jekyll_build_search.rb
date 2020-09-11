@@ -13,7 +13,7 @@ module Jekyll
       converter = site.find_converter_instance(::Jekyll::Converters::Markdown)
       search_list = []
 
-      site.posts.docs.each do |post|
+      site.posts.docs.reverse_each do |post|
         search_list.push(*build_post_hashes(post, converter))
       end
 
@@ -49,7 +49,7 @@ module Jekyll
         date = DateTime.parse(line.strip)
         yearmonth = date.strftime("%Y_%m")
         iddate = date.strftime("%Y%m%d")
-        displaydate = date.strftime("%a, %b %e")
+        displaydate = date.strftime("%b %e, %Y")
 
         # we've found a new entry, remove it from the previous entry's lines
         curr_hash["content"].pop()
