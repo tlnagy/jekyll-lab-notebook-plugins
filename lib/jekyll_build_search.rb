@@ -13,7 +13,7 @@ module Jekyll
       converter = site.find_converter_instance(::Jekyll::Converters::Markdown)
       search_list = []
 
-      site.posts.docs.each do |post|
+      site.posts.docs.reverse_each do |post|
         search_list.push(*build_post_hashes(post, converter))
       end
 
